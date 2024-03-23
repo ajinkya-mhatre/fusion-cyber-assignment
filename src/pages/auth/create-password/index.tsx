@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
 import AuthPagesLayout from "@/pages/auth/AuthPagesLayout";
+import { GlobalStateContext } from "@/pages/_app";
 
 export interface CreatePasswordFormData {
   password: string;
@@ -14,6 +15,7 @@ export interface CreatePasswordFormData {
 
 const CreatePasswordForm = () => {
   const router = useRouter();
+  const globalState = useContext(GlobalStateContext);
   const [isLoading, setIsLoading] = useState(false);
 
   const methods = useForm<CreatePasswordFormData>({
@@ -23,9 +25,9 @@ const CreatePasswordForm = () => {
     },
   });
 
-  const onSubmit = async (data: CreatePasswordFormData) => {
-    console.log("Submitting form", data);
+  const onCreatePasswordSubmit = async (data: CreatePasswordFormData) => {
     try {
+      setIsLoading(true);
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
@@ -36,13 +38,16 @@ const CreatePasswordForm = () => {
           confirmPassword: data.confirmPassword,
         }),
       });
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+      if (response.ok) {
+        await router.push("/auth/login");
       }
-      // Process response here
-      console.log("Registration Successful", response);
+      globalState.setToastText(
+        "Password created successfully",
+        "alert-success",
+      );
+      setIsLoading(false);
     } catch (error: any) {
-      console.error("Registration Failed:", error);
+      globalState.setToastText("Password creation Failed", "alert-error");
     }
   };
 
@@ -50,7 +55,9 @@ const CreatePasswordForm = () => {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={(e) => void methods.handleSubmit(onSubmit)(e)}>
+      <form
+        onSubmit={(e) => void methods.handleSubmit(onCreatePasswordSubmit)(e)}
+      >
         <AuthPagesLayout>
           <div className="flex justify-center text-[28px] font-semibold leading-8 mb-4">
             Create password
@@ -97,7 +104,8 @@ const CreatePasswordForm = () => {
           <Button
             isSubmit={true}
             text="Createa account"
-            className="bg-[#2F80ED]"
+            className={`bg-[#2F80ED] ${isLoading && "animate-pulse"}`}
+            disabled={isLoading}
           />
           <div className="text-[#4F4F4F] text-sm">
             By creating an account, you agree with our{" "}

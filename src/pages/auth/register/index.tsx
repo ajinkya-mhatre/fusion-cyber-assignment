@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { FcGoogle } from "react-icons/fc";
@@ -9,6 +9,7 @@ import Input from "@/components/Input";
 import Button from "@/components/Button";
 import AuthPagesLayout from "@/pages/auth/AuthPagesLayout";
 import { EMAIL_REGEX } from "@/utils/constants";
+import { GlobalStateContext } from "@/pages/_app";
 
 export interface RegisterFormData {
   email: string;
@@ -16,6 +17,7 @@ export interface RegisterFormData {
 
 const RegisterForm = () => {
   const router = useRouter();
+  const globalState = useContext(GlobalStateContext);
   const [isLoading, setIsLoading] = useState(false);
 
   const methods = useForm<RegisterFormData>({
@@ -24,10 +26,10 @@ const RegisterForm = () => {
     },
   });
 
-  const onSubmit = async (data: RegisterFormData) => {
-    console.log("Submitting form", data);
+  const onRegisterSubmit = async (data: RegisterFormData) => {
     try {
-      const response = await fetch("/api/auth/login", {
+      setIsLoading(true);
+      const response = await fetch("/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -35,21 +37,18 @@ const RegisterForm = () => {
         body: JSON.stringify({ email: data.email }),
       });
       if (response.ok) {
-        router.push("/auth/create-password");
+        await router.push("/auth/create-password");
       }
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      // Process response here
-      console.log("Registration Successful", response);
+      globalState.setToastText("Register successfully", "alert-success");
+      setIsLoading(false);
     } catch (error: any) {
-      console.error("Registration Failed:", error);
+      globalState.setToastText("Registration Failed", "alert-error");
     }
   };
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={(e) => void methods.handleSubmit(onSubmit)(e)}>
+      <form onSubmit={(e) => void methods.handleSubmit(onRegisterSubmit)(e)}>
         <AuthPagesLayout>
           <div className="flex justify-center text-[28px] font-semibold leading-8 mb-10">
             Register
@@ -68,7 +67,8 @@ const RegisterForm = () => {
           <Button
             isSubmit={true}
             text="Continue with email"
-            className="bg-[#2F80ED]"
+            className={`bg-[#2F80ED] ${isLoading && "animate-pulse"}`}
+            disabled={isLoading}
           />
           <div className="flex-ic justify-between">
             <div className="h-[1px] bg-[#E0E0E0] w-full" />
