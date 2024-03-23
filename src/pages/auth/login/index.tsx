@@ -9,6 +9,7 @@ import Input from "@/components/Input";
 import Button from "@/components/Button";
 import AuthPagesLayout from "@/pages/auth/AuthPagesLayout";
 import { EMAIL_REGEX } from "@/utils/constants";
+import Loader from "@/components/Loader";
 
 export interface LoginFormData {
   email: string;
@@ -29,6 +30,7 @@ const LoginForm = () => {
   const onSubmit = async (data: LoginFormData) => {
     console.log("input", data);
     try {
+      setIsLoading(true);
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
@@ -39,6 +41,7 @@ const LoginForm = () => {
       if (response.ok) {
         await router.push("/home");
       }
+      setIsLoading(false);
     } catch (error: any) {
       console.error("Registration Failed:", error);
     }
@@ -92,6 +95,8 @@ const LoginForm = () => {
             isSubmit={true}
             text="Continue with email"
             className="bg-[#2F80ED]"
+            icon={isLoading && <Loader />}
+            disabled={isLoading}
           />
           <div className="flex-ic justify-between">
             <div className="h-[1px] bg-[#E0E0E0] w-full" />

@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
 import AuthPagesLayout from "@/pages/auth/AuthPagesLayout";
+import Loader from "@/components/Loader";
 
 export interface CreatePasswordFormData {
   email: string;
@@ -102,6 +103,7 @@ const CreatePasswordForm = () => {
             isSubmit={true}
             text="Create a account"
             className="bg-[#2F80ED]"
+            icon={isLoading && <Loader />}
             disabled={isLoading}
           />
           <div className="text-[#4F4F4F] text-sm">

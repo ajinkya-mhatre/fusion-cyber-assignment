@@ -9,6 +9,7 @@ import Input from "@/components/Input";
 import Button from "@/components/Button";
 import AuthPagesLayout from "@/pages/auth/AuthPagesLayout";
 import { EMAIL_REGEX } from "@/utils/constants";
+import Loader from "@/components/Loader";
 
 export interface RegisterFormData {
   email: string;
@@ -65,6 +66,7 @@ const RegisterForm = () => {
             isSubmit={true}
             text="Continue with email"
             className="bg-[#2F80ED]"
+            icon={isLoading && <Loader />}
             disabled={isLoading}
           />
           <div className="flex-ic justify-between">

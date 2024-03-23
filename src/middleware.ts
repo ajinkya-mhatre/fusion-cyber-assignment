@@ -1,13 +1,16 @@
-import type { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
-  /*const currentUser = request.cookies.get("currentUser")?.value;
-  console.log("currentUser", currentUser, request.nextUrl.pathname);
-  if (currentUser && !request.nextUrl.pathname.startsWith("/dashboard")) {
-    return Response.redirect(new URL("/dashboard", request.url));
-  }
+  const currentUser = request.cookies.get("token");
+  console.log("currentUser", currentUser);
 
-  if (!currentUser && !request.nextUrl.pathname.startsWith("/dashboard")) {
-    return Response.redirect(new URL("/auth/login", request.url));
-  }*/
+  const url = request.nextUrl.clone();
+  if (url.pathname === "/") {
+    url.pathname = "/home";
+    return NextResponse.redirect(url);
+  }
 }
+
+export const config = {
+  matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"],
+};

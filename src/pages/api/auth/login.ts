@@ -45,14 +45,13 @@ export default async function handler(
               user_id: registeredUser.id,
             },
           });
+          return res.status(200).json({ message: "Login Successful", token });
         } else {
           res.status(401).json({ error: "Password don't matched" });
           return;
         }
       }
     }
-
-    res.status(200).json({ message: "Login Successful" });
     console.log("output", "Email:", email, "Password:", password);
   } catch (error) {
     res.status(500).json({ message: "Login Failed" });
