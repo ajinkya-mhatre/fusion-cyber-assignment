@@ -19,8 +19,9 @@ export default async function handler(
         email: email,
       },
     });
+
     res.status(200).json({ message: "Register successfully" });
-    console.log("Email:", email);
+    console.log("output", "Email:", user);
   } catch (error) {
     res.status(500).json({ message: "Login Failed" });
   }

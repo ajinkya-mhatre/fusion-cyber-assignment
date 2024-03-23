@@ -64,7 +64,7 @@ const RegisterForm = () => {
           <Button
             isSubmit={true}
             text="Continue with email"
-            className={`bg-[#2F80ED] ${isLoading && "animate-pulse"}`}
+            className="bg-[#2F80ED]"
             disabled={isLoading}
           />
           <div className="flex-ic justify-between">

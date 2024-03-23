@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 import * as argon2 from "argon2";
-import { generateToken } from "@/utils/misc";
 
 const prisma = new PrismaClient();
 
@@ -19,7 +18,10 @@ export default async function handler(
     const registeredUser = await prisma.user.findFirst({
       where: {
         email: email,
-        password: password,
+      },
+      select: {
+        id: true,
+        password: true,
       },
     });
 
@@ -34,16 +36,21 @@ export default async function handler(
           registeredUser.password as string,
           password,
         );
+        console.log("isPasswordCorrect", isPasswordCorrect);
         if (isPasswordCorrect) {
-          return {
-            token: await generateToken(email, password, registeredUser, prisma),
-          };
+          const token = await argon2.hash(`${email}|${password}|${Date.now()}`);
+          await prisma.authToken.create({
+            data: {
+              token,
+              user_id: registeredUser.id,
+            },
+          });
         }
       }
     }
 
     res.status(200).json({ message: "Login Successful" });
-    console.log("Email:", email, "Password:", password);
+    console.log("output", "Email:", email, "Password:", password);
   } catch (error) {
     res.status(500).json({ message: "Login Failed" });
   }

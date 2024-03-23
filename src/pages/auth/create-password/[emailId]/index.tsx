@@ -100,8 +100,8 @@ const CreatePasswordForm = () => {
           />
           <Button
             isSubmit={true}
-            text="Createa account"
-            className={`bg-[#2F80ED] ${isLoading && "animate-pulse"}`}
+            text="Create a account"
+            className="bg-[#2F80ED]"
             disabled={isLoading}
           />
           <div className="text-[#4F4F4F] text-sm">

@@ -27,7 +27,7 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (data: LoginFormData) => {
-    console.log("Submitting form", data);
+    console.log("input", data);
     try {
       const response = await fetch("/api/auth/login", {
         method: "POST",
@@ -36,11 +36,6 @@ const LoginForm = () => {
         },
         body: JSON.stringify({ email: data.email, password: data.password }),
       });
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      // Process response here
-      console.log("Registration Successful", response);
     } catch (error: any) {
       console.error("Registration Failed:", error);
     }
