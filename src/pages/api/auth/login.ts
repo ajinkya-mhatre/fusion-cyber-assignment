@@ -51,7 +51,7 @@ export default async function handler(
               user_id: registeredUser.id,
             },
           });
-          res.setHeader("Set-Cookie", `token=${token}`);
+          res.setHeader("Set-Cookie", `token=${token}; Path=/;`);
           return res.status(200).json({ message: "Login Successful" });
         } else {
           res.status(401).json({ error: "Password don't matched" });
