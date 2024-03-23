@@ -66,6 +66,7 @@ function Input(props: Props) {
             })();
             onChange(e);
           }}
+          autoComplete={name}
         />
         {showPassword ? (
           <div className="absolute top-[58%] right-3">

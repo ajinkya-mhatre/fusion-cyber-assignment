@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -6,18 +6,17 @@ import { useRouter } from "next/router";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
 import AuthPagesLayout from "@/pages/auth/AuthPagesLayout";
-import { GlobalStateContext } from "@/pages/_app";
 
 export interface CreatePasswordFormData {
+  email: string;
   password: string;
   confirmPassword: string;
 }
 
 const CreatePasswordForm = () => {
   const router = useRouter();
-  const globalState = useContext(GlobalStateContext);
   const [isLoading, setIsLoading] = useState(false);
-
+  const email = router.query.emailId as string;
   const methods = useForm<CreatePasswordFormData>({
     defaultValues: {
       password: "",
@@ -26,14 +25,16 @@ const CreatePasswordForm = () => {
   });
 
   const onCreatePasswordSubmit = async (data: CreatePasswordFormData) => {
+    console.log("input", data);
     try {
       setIsLoading(true);
-      const response = await fetch("/api/auth/login", {
+      const response = await fetch("/api/auth/create-password", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          email: email,
           password: data.password,
           confirmPassword: data.confirmPassword,
         }),
@@ -41,13 +42,9 @@ const CreatePasswordForm = () => {
       if (response.ok) {
         await router.push("/auth/login");
       }
-      globalState.setToastText(
-        "Password created successfully",
-        "alert-success",
-      );
       setIsLoading(false);
     } catch (error: any) {
-      globalState.setToastText("Password creation Failed", "alert-error");
+      console.log("error", error);
     }
   };
 
@@ -98,7 +95,7 @@ const CreatePasswordForm = () => {
                 message: "Password is required",
               },
               validate: (value) =>
-                value === password || "The passwords do not match",
+                value === password || "The password do not match",
             }}
           />
           <Button

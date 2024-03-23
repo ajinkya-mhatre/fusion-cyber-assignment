@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { FcGoogle } from "react-icons/fc";
@@ -9,7 +9,6 @@ import Input from "@/components/Input";
 import Button from "@/components/Button";
 import AuthPagesLayout from "@/pages/auth/AuthPagesLayout";
 import { EMAIL_REGEX } from "@/utils/constants";
-import { GlobalStateContext } from "@/pages/_app";
 
 export interface RegisterFormData {
   email: string;
@@ -17,7 +16,6 @@ export interface RegisterFormData {
 
 const RegisterForm = () => {
   const router = useRouter();
-  const globalState = useContext(GlobalStateContext);
   const [isLoading, setIsLoading] = useState(false);
 
   const methods = useForm<RegisterFormData>({
@@ -37,12 +35,11 @@ const RegisterForm = () => {
         body: JSON.stringify({ email: data.email }),
       });
       if (response.ok) {
-        await router.push("/auth/create-password");
+        await router.push(`/auth/create-password/${data.email}`);
       }
-      globalState.setToastText("Register successfully", "alert-success");
       setIsLoading(false);
     } catch (error: any) {
-      globalState.setToastText("Registration Failed", "alert-error");
+      console.log("error", error);
     }
   };
 
