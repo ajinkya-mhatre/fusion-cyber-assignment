@@ -36,7 +36,7 @@ export default async function handler(
           registeredUser.password as string,
           password,
         );
-        console.log("isPasswordCorrect", isPasswordCorrect);
+
         if (isPasswordCorrect) {
           const token = await argon2.hash(`${email}|${password}|${Date.now()}`);
           await prisma.authToken.create({
@@ -45,6 +45,9 @@ export default async function handler(
               user_id: registeredUser.id,
             },
           });
+        } else {
+          res.status(401).json({ error: "Password don't matched" });
+          return;
         }
       }
     }

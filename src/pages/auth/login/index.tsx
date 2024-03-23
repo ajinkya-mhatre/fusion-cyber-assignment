@@ -36,6 +36,9 @@ const LoginForm = () => {
         },
         body: JSON.stringify({ email: data.email, password: data.password }),
       });
+      if (response.ok) {
+        await router.push("/home");
+      }
     } catch (error: any) {
       console.error("Registration Failed:", error);
     }
