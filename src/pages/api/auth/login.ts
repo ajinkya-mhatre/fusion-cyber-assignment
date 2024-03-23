@@ -10,6 +10,12 @@ export default async function handler(
 ) {
   try {
     const { email, password } = req.body;
+
+    if (req.method !== "POST") {
+      res.status(405).json({ error: "Method not allowed" });
+      return;
+    }
+
     if (!email || !password) {
       res.status(401).json({ error: "Email and Password are required" });
       return;
@@ -45,7 +51,8 @@ export default async function handler(
               user_id: registeredUser.id,
             },
           });
-          return res.status(200).json({ message: "Login Successful", token });
+          res.setHeader("Set-Cookie", `token=${token}`);
+          return res.status(200).json({ message: "Login Successful" });
         } else {
           res.status(401).json({ error: "Password don't matched" });
           return;
