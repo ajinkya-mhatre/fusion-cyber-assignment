@@ -9,10 +9,11 @@ import MobileNav from "@/components/MobileNav";
 function Header() {
   const router = useRouter();
   const isAuthPage = router.pathname.startsWith("/auth");
+  const isAuthenticated = router.pathname.startsWith("/home");
 
   return (
     <div
-      className={`h-[68px] flex-ic p-4 sm:mx-[100px] font-medium sm:flex-initial ${
+      className={`h-[68px] fixed top-0 left-0 w-full max-w-[1280px] sm:mx-[100px] flex-ic p-4 font-medium sm:flex-initial ${
         isAuthPage ? "justify-center md:justify-start" : "justify-between"
       }`}
     >
@@ -28,7 +29,7 @@ function Header() {
           </>
         )}
       </div>
-      {!isAuthPage && (
+      {!isAuthPage && !isAuthenticated && (
         <div className="hidden md:flex-ic gap-[10px]">
           <Button
             type="secondary"
@@ -43,6 +44,13 @@ function Header() {
             onClick={() => router.push("/auth/login")}
           />
         </div>
+      )}
+      {!isAuthPage && isAuthenticated && (
+        <Button
+          text="Dashboard"
+          className="max-w-fit py3 px-3 bg-[#2F80ED] md:py-[10px] md:px-[18px] text-sm md:text-[15px]"
+          onClick={() => router.push("/auth/login")}
+        />
       )}
     </div>
   );

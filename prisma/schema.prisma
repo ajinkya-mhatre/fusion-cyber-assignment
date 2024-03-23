@@ -34,3 +34,17 @@ model AuthToken {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }
+
+model Hotel {
+  id String @id @default(cuid())
+
+  name           String?
+  country        String  @unique
+  image          String
+  property_count Int
+  is_public      Boolean @default(false)
+  popular_rating Float
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}

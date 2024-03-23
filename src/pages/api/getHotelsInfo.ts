@@ -38,8 +38,9 @@ export default async function handler(
       return;
     }
 
-    res.status(200).json({ message: "User found", user });
+    const hotels = await prisma.hotel.findMany();
+    res.status(200).json({ message: "Data found", hotels });
   } catch (error) {
-    res.status(500).json({ message: "Failed to get user" });
+    res.status(500).json({ message: "Failed to get hotel details" });
   }
 }

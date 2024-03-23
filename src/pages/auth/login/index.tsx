@@ -27,7 +27,7 @@ const LoginForm = () => {
     },
   });
 
-  const onSubmit = async (data: LoginFormData) => {
+  const onLoginSubmit = async (data: LoginFormData) => {
     console.log("input", data);
     try {
       setIsLoading(true);
@@ -49,7 +49,7 @@ const LoginForm = () => {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={(e) => void methods.handleSubmit(onSubmit)(e)}>
+      <form onSubmit={(e) => void methods.handleSubmit(onLoginSubmit)(e)}>
         <AuthPagesLayout>
           <div className="flex justify-center text-[28px] font-semibold leading-8 mb-10">
             Sign in

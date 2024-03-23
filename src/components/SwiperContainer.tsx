@@ -12,7 +12,7 @@ const images = [
 
 const SwiperContainer = () => {
   return (
-    <div className="relative sm:mx-[100px] mt-4">
+    <div className="relative mt-[68px]">
       <Slider
         autoplay
         autoplaySpeed={2000}
