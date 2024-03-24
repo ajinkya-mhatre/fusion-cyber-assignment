@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useInfiniteQuery, useQuery } from "react-query";
+import { getCookie } from "cookies-next";
 
 import Header from "@/components/Header";
 import SwiperContainer from "@/components/SwiperContainer";
@@ -13,6 +14,8 @@ import { useRouter } from "next/router";
 const Index = () => {
   const router = useRouter();
   const [page, setPage] = useState(1);
+  const isAuthenticated = !!getCookie("token");
+  console.log(getCookie("token"));
   const fetchFirstPageHotels = (page = 0) =>
     fetch("/api/get-paginated-hotels-Info?page=" + page).then((res) =>
       res.json(),
@@ -45,8 +48,6 @@ const Index = () => {
     setPage(value);
     void fetchNextPage();
   };
-
-  const isAuthenticated = router.query.loggedIn === "true";
 
   return (
     <div className="sm:mx-[100px] relative p-4 sm:p-0 mb-16">

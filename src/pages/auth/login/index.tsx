@@ -39,7 +39,7 @@ const LoginForm = () => {
         body: JSON.stringify({ email: data.email, password: data.password }),
       });
       if (response.ok) {
-        await router.push("/home?loggedIn=true");
+        await router.push("/home");
       }
       setIsLoading(false);
     } catch (error: any) {
