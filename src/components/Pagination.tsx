@@ -43,7 +43,7 @@ const Pagination = (props: PaginationProps) => {
     visiblePageNumbers[visiblePageNumbers.length - 1] < pageCount;
 
   return (
-    <div className="flex select-none gap-2">
+    <div className="flex select-none gap-2 max-w-fit">
       <Button
         type="secondary"
         text=""

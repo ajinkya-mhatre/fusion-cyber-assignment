@@ -6,10 +6,13 @@ import { useRouter } from "next/router";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import Image from "next/image";
 
-function MobileNav() {
+interface MobileNavProps {
+  isAuthenticated: boolean;
+}
+function MobileNav(props: MobileNavProps) {
+  const { isAuthenticated } = props;
   const router = useRouter();
   const isAuthPage = router.pathname.startsWith("/auth");
-  const isAuthenticated = router.pathname.startsWith("/home");
   const [showOptions, setShowOptions] = useState(false);
   return (
     <div className="md:hidden">

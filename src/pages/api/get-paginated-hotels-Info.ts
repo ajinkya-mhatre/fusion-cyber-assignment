@@ -12,31 +12,6 @@ export default async function handler(
       res.status(405).json({ error: "Method not allowed" });
       return;
     }
-    const getUserIdFromToken = async (token: string, prisma: PrismaClient) =>
-      (
-        await prisma.authToken.findFirst({
-          where: {
-            token,
-          },
-        })
-      )?.user_id;
-    const userId =
-      (await getUserIdFromToken(req.cookies.token || "", prisma)) || "";
-
-    const user = await prisma.user.findFirst({
-      where: {
-        id: userId,
-      },
-      select: {
-        id: true,
-        email: true,
-      },
-    });
-
-    if (!user) {
-      res.status(401).json({ error: "User not found" });
-      return;
-    }
 
     const skip =
       Number(req.query.page) === 1 ? 0 : (Number(req.query.page) - 1) * 8;

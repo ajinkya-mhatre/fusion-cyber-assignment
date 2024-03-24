@@ -6,10 +6,13 @@ import DesktopNav from "@/components/DesktopNav";
 import Button from "@/components/Button";
 import MobileNav from "@/components/MobileNav";
 
-function Header() {
+interface HeaderProps {
+  isAuthenticated: boolean;
+}
+function Header(props: HeaderProps) {
+  const { isAuthenticated } = props;
   const router = useRouter();
   const isAuthPage = router.pathname.startsWith("/auth");
-  const isAuthenticated = router.pathname.startsWith("/home");
 
   return (
     <div
@@ -25,7 +28,7 @@ function Header() {
         {!isAuthPage && (
           <>
             <DesktopNav />
-            <MobileNav />
+            <MobileNav isAuthenticated={isAuthenticated} />
           </>
         )}
       </div>

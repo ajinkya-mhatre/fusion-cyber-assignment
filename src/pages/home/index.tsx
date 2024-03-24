@@ -8,8 +8,10 @@ import CardComponent from "@/components/CardComponent";
 import Loader from "@/components/Loader";
 import Button from "@/components/Button";
 import Pagination from "@/components/Pagination";
+import { useRouter } from "next/router";
 
 const Index = () => {
+  const router = useRouter();
   const [page, setPage] = useState(1);
   const fetchFirstPageHotels = (page = 0) =>
     fetch("/api/get-paginated-hotels-Info?page=" + page).then((res) =>
@@ -44,9 +46,11 @@ const Index = () => {
     void fetchNextPage();
   };
 
+  const isAuthenticated = router.query.loggedIn === "true";
+
   return (
     <div className="sm:mx-[100px] relative p-4 sm:p-0 mb-16">
-      <Header />
+      <Header isAuthenticated={isAuthenticated} />
       <SwiperContainer />
       <Warning
         text="Check the latest COVID-19 restrictions before you travel."
