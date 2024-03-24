@@ -9,10 +9,8 @@ import CardComponent from "@/components/CardComponent";
 import Loader from "@/components/Loader";
 import Button from "@/components/Button";
 import Pagination from "@/components/Pagination";
-import { useRouter } from "next/router";
 
 const Index = () => {
-  const router = useRouter();
   const [page, setPage] = useState(1);
   const isAuthenticated = !!getCookie("token");
   const fetchFirstPageHotels = (page = 0) =>
