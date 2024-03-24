@@ -15,7 +15,6 @@ const Index = () => {
   const router = useRouter();
   const [page, setPage] = useState(1);
   const isAuthenticated = !!getCookie("token");
-  console.log(getCookie("token"));
   const fetchFirstPageHotels = (page = 0) =>
     fetch("/api/get-paginated-hotels-Info?page=" + page).then((res) =>
       res.json(),

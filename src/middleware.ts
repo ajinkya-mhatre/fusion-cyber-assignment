@@ -4,7 +4,9 @@ import { NextResponse } from "next/server";
 export function middleware(request: NextRequest) {
   const token = request.cookies.get("token")?.value;
   if (!token) {
-    return NextResponse.redirect("http://localhost:3000/auth/login");
+    return NextResponse.redirect(
+      `${process.env.NEXT_PUBLIC_APP_HOST}/auth/login`,
+    );
   }
 }
 
