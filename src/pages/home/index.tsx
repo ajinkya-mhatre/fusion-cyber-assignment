@@ -12,10 +12,12 @@ import Pagination from "@/components/Pagination";
 const Index = () => {
   const [page, setPage] = useState(1);
   const fetchFirstPageHotels = (page = 0) =>
-    fetch("/api/getHotelsInfo?page=" + page).then((res) => res.json());
+    fetch("/api/get-paginated-hotels-Info?page=" + page).then((res) =>
+      res.json(),
+    );
 
   const fetchAllHotels = () =>
-    fetch("/api/getAllHotelsInfo").then((res) => res.json());
+    fetch("/api/get-all-hotels-info").then((res) => res.json());
 
   const { data: allHotels, isLoading: isLoadingAllData } = useQuery(
     "getAllHotelsData",
@@ -94,7 +96,7 @@ const Index = () => {
               />
             )}
           </div>
-          <div className="mt-8 flex-ic gap-4 justify-center lg:justify-between flex-wrap gap-y-2">
+          <div className="mt-8 flex-ic gap-4 justify-center lg:justify-between flex-wrap gap-y-2 mb-4">
             {hotels?.slice(0, 8).map((hotel: any) => {
               return (
                 <CardComponent
@@ -107,7 +109,7 @@ const Index = () => {
             })}
           </div>
           <Pagination
-            initialPage={1}
+            initialPage={page}
             onPageChange={(page) => handlePageChange(page)}
             pageSize={8}
             totalCount={allHotelsData?.length || 0}
