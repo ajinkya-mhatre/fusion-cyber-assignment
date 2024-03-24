@@ -7,10 +7,10 @@ import Button from "@/components/Button";
 import MobileNav from "@/components/MobileNav";
 
 interface HeaderProps {
-  isAuthenticated: boolean;
+  isAuthenticated?: boolean;
 }
 function Header(props: HeaderProps) {
-  const { isAuthenticated } = props;
+  const { isAuthenticated = false } = props;
   const router = useRouter();
   const isAuthPage = router.pathname.startsWith("/auth");
 
