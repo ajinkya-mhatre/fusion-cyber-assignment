@@ -3,10 +3,10 @@ import { NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get("token")?.value;
+  const url = request.nextUrl.clone();
   if (!token) {
-    return NextResponse.redirect(
-      `${process.env.NEXT_PUBLIC_APP_HOST}/auth/login`,
-    );
+    url.pathname = "/auth/login";
+    return NextResponse.redirect(url);
   }
 }
 
