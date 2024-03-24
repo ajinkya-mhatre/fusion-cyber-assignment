@@ -8,10 +8,21 @@ interface CardComponentProps {
 }
 const CardComponent = (props: CardComponentProps) => {
   const { url, title, count } = props;
+  const imageUrl = `https://images.unsplash.com/${url}`;
   return (
-    <div className="flex-ic flex-col gap-2">
-      <Image src={url} alt="Logo" width={295} height={220} />
-      <div className="text-lg flex-ic flex-col gap-[6px]">
+    <div className="flex flex-col gap-2 w-fit">
+      <div className="relative h-[220px] w-[295px]">
+        <Image
+          src={imageUrl}
+          alt="Logo"
+          fill
+          unoptimized
+          priority
+          style={{ objectFit: "cover" }}
+          className="rounded-[8px] overflow-hidden"
+        />
+      </div>
+      <div className="text-lg flex flex-col gap-[6px]">
         <div className="text-[20px] font-semibold">{title}</div>
         <div className="text-sm font-normal">{count} properties</div>
       </div>

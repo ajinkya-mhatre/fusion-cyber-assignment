@@ -8,6 +8,8 @@ import Image from "next/image";
 
 function MobileNav() {
   const router = useRouter();
+  const isAuthPage = router.pathname.startsWith("/auth");
+  const isAuthenticated = router.pathname.startsWith("/home");
   const [showOptions, setShowOptions] = useState(false);
   return (
     <div className="md:hidden">
@@ -55,19 +57,30 @@ function MobileNav() {
               );
             })}
           </div>
-          <div className="flex-ic flex-col gap-[10px]">
-            <Button
-              type="secondary"
-              text="Register"
-              className="py3 px-3 md:py-[10px] md:px-[18px] text-[#2F80ED] text-sm md:text-[15px]"
-              borderColorForSecondary="border-[#2F80ED]"
-            />
-            <Button
-              text="Sign In"
-              className="py3 px-3 bg-[#2F80ED] md:py-[10px] md:px-[18px] text-sm md:text-[15px]"
-              onClick={() => router.push("/auth/login")}
-            />
-          </div>
+          {!isAuthPage && !isAuthenticated && (
+            <div className="flex-ic flex-col gap-[10px]">
+              <Button
+                type="secondary"
+                text="Register"
+                className="py3 px-3 md:py-[10px] md:px-[18px] text-[#2F80ED] text-sm md:text-[15px]"
+                borderColorForSecondary="border-[#2F80ED]"
+              />
+              <Button
+                text="Sign In"
+                className="py3 px-3 bg-[#2F80ED] md:py-[10px] md:px-[18px] text-sm md:text-[15px]"
+                onClick={() => router.push("/auth/login")}
+              />
+            </div>
+          )}
+          {!isAuthPage && isAuthenticated && (
+            <div className="flex justify-center">
+              <Button
+                text="Dashboard"
+                className="max-w-fit py3 px-3 bg-[#2F80ED] md:py-[10px] md:px-[18px] text-sm md:text-[15px]"
+                onClick={() => router.push("/auth/login")}
+              />
+            </div>
+          )}
         </Drawer>
       )}
     </div>

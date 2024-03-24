@@ -29,6 +29,7 @@ function Button(props: Props) {
       rounded-[6px] px-[18px] py-[12px] cursor-pointer 
       ${type === "primary" && "text-white"} 
       ${type === "secondary" && `border-[1px] ${borderColorForSecondary ? borderColorForSecondary : "border-[#E0E0E0]"}`} 
+      ${disabled && "opacity-50 cursor-not-allowed"}
       ${className}`}
       type={isSubmit ? "submit" : "button"}
       onClick={(e) => (!disabled && onClick ? onClick(e) : () => null)}
