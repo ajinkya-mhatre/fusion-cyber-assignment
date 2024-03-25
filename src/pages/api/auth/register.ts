@@ -20,6 +20,17 @@ export default async function handler(
       return;
     }
 
+    const registeredUser = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+
+    if (registeredUser) {
+      res.status(401).json({ error: "Email already exists" });
+      return;
+    }
+
     const user = await prisma.user.create({
       data: {
         email: email,

@@ -7,6 +7,8 @@ import Input from "@/components/Input";
 import Button from "@/components/Button";
 import AuthPagesLayout from "@/pages/auth/AuthPagesLayout";
 import Loader from "@/components/Loader";
+import { useToast } from "@/utils/misc";
+import Toast from "@/components/Toast";
 
 export interface CreatePasswordFormData {
   email: string;
@@ -16,6 +18,7 @@ export interface CreatePasswordFormData {
 
 const CreatePasswordForm = () => {
   const router = useRouter();
+  const { toastText, toastType, setToast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const email = router.query.emailId as string;
   const methods = useForm<CreatePasswordFormData>({
@@ -44,8 +47,11 @@ const CreatePasswordForm = () => {
         await router.push("/auth/login");
       }
       setIsLoading(false);
+      if (!response.ok) {
+        setToast("Something went wrong", "alert-error");
+      }
     } catch (error: any) {
-      console.log("error", error);
+      setIsLoading(false);
     }
   };
 
@@ -118,6 +124,7 @@ const CreatePasswordForm = () => {
           </div>
         </AuthPagesLayout>
       </form>
+      {toastText && <Toast title={toastText} toastType={toastType} />}
     </FormProvider>
   );
 };

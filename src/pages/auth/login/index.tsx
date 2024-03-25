@@ -10,6 +10,8 @@ import Button from "@/components/Button";
 import AuthPagesLayout from "@/pages/auth/AuthPagesLayout";
 import { EMAIL_REGEX } from "@/utils/constants";
 import Loader from "@/components/Loader";
+import { useToast } from "@/utils/misc";
+import Toast from "@/components/Toast";
 
 export interface LoginFormData {
   email: string;
@@ -18,6 +20,7 @@ export interface LoginFormData {
 
 const LoginForm = () => {
   const router = useRouter();
+  const { toastText, toastType, setToast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
   const methods = useForm<LoginFormData>({
@@ -41,9 +44,12 @@ const LoginForm = () => {
       if (response.ok) {
         await router.push("/home");
       }
+      if (!response.ok) {
+        setToast("Something went wrong", "alert-error");
+      }
       setIsLoading(false);
     } catch (error: any) {
-      console.error("Registration Failed:", error);
+      setIsLoading(false);
     }
   };
 
@@ -124,6 +130,7 @@ const LoginForm = () => {
           </div>
         </AuthPagesLayout>
       </form>
+      {toastText && <Toast title={toastText} toastType={toastType} />}
     </FormProvider>
   );
 };
